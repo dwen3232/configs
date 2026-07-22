@@ -56,4 +56,7 @@ fi
 
 printf "🤖 %s | %b | %b | %b | %b\n" \
   "$model" "$ctx_str" "$cost_str" "$diff_str" "$git_str"
-[ -n "$pr_link" ] && printf "${CYAN}🔗 %s${RESET}\n" "$pr_link"
+if [ -n "$pr_link" ]; then
+  printf "${CYAN}🔗 %s${RESET}\n" "$pr_link"
+fi
+exit 0
