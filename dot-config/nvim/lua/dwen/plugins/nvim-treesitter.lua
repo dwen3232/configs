@@ -29,6 +29,7 @@ return {
         "query",
         "python",
         "terraform",
+        "odin",
       },
       incremental_selection = {
         enable = true,

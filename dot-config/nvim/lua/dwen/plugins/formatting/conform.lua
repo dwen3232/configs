@@ -18,6 +18,7 @@ return {
         rust = { "rustfmt" },
         terraform = { "terraform_fmt" },
         go = { "gofumpt" },
+        odin = { "odinfmt" },
       },
     })
 

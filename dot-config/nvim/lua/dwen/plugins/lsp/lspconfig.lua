@@ -151,6 +151,7 @@ return {
       "sqlls",
       "dockerls",
       "lua_ls",
+      "ols",
     })
 
     vim.lsp.config("*", {
