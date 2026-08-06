@@ -15,6 +15,7 @@ import os
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -103,6 +104,17 @@ def cmd_resolve(args):
     print(json.dumps({"id": w["id"], "name": w["display_name"]}))
 
 
+def cmd_projects(args):
+    w = resolve_workspace(args.workspace)
+    params = [f"limit={args.limit}"]
+    if args.name_contains:
+        params.append(f"name_contains={urllib.parse.quote(args.name_contains)}")
+    path = f"/api/v1/sessions?{'&'.join(params)}"
+    resp = request("GET", path, headers={"X-Tenant-Id": w["id"]})
+    out = [{"id": p["id"], "name": p["name"]} for p in resp]
+    print(json.dumps(out, indent=2))
+
+
 def cmd_threads_query(args):
     w = resolve_workspace(args.workspace)
     body = {"page_size": args.page_size}
@@ -150,6 +162,12 @@ def main():
     p = sub.add_parser("resolve", help="Resolve a human workspace name to its id")
     p.add_argument("name")
     p.set_defaults(func=cmd_resolve)
+
+    p = sub.add_parser("projects", help="List tracing projects (sessions) within a workspace")
+    p.add_argument("--workspace", required=True, help="Workspace display name, tenant handle, or id")
+    p.add_argument("--name-contains", help="Filter projects by partial name match")
+    p.add_argument("--limit", type=int, default=100)
+    p.set_defaults(func=cmd_projects)
 
     p = sub.add_parser("threads-query", help="Query threads within a workspace, paginating automatically")
     p.add_argument("--workspace", required=True, help="Workspace display name, tenant handle, or id")
