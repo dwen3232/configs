@@ -4,6 +4,7 @@
 
 - Never read `.env` files or any file containing secrets or credentials.
 - Never stage, unstage, commit, or push changes in git unless explicitly asked to.
+  - You MUST get explicit approval before committing any code
 - Never create a new git worktree unless explicitly asked to.
 - Never make code changes unless asked to
 

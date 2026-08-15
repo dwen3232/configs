@@ -69,6 +69,10 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "voice": {
+    "enabled": true,
+    "mode": "tap"
+  },
   "editorMode": "normal",
   "preferredNotifChannel": "kitty",
   "autoCompactEnabled": false,
