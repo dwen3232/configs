@@ -113,7 +113,7 @@ launch_tuicr_pane() {
   log_info "Waiting for tuicr to exit..."
 
   local wait_response
-  wait_response=$("$HERDR_BIN" pane wait-output "$new_pane_id" \
+  wait_response=$("$HERDR_BIN" wait output "$new_pane_id" \
     --match "$completion_token" \
     --source recent-unwrapped)
 
