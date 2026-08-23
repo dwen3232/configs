@@ -18,6 +18,8 @@ Use the 1Password CLI to pass secrets to commands without exposing secret values
 
 Run `op [command] --help` for full details on any command.
 
+You do NOT need to run `op signin` before executing a script that utilizes 1Password CLI; any `op` command will automatically prompt the user for auth.
+
 ## Priority rules
 
 1. Secret values must not enter model context. Do not print, read, summarize, transform, paste, or store resolved secret values.
