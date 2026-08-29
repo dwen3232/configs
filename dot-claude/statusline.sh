@@ -40,11 +40,19 @@ diff_str=""
 
 branch=""
 pr_link=""
+pr_icon=""
 if git -C "$dir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   branch=$(git -C "$dir" branch --show-current 2>/dev/null)
   [ -z "$branch" ] && branch=$(git -C "$dir" rev-parse --abbrev-ref HEAD 2>/dev/null)
   if [ -n "$branch" ] && command -v gh >/dev/null 2>&1; then
-    pr_link=$(cd "$dir" && gh pr view --json url -q .url 2>/dev/null)
+    pr_json=$(cd "$dir" && gh pr view --json url,state 2>/dev/null)
+    pr_link=$(echo "$pr_json" | jq -r '.url // empty')
+    pr_state=$(echo "$pr_json" | jq -r '.state // empty')
+    case "$pr_state" in
+      MERGED) pr_icon="🟣" ;;
+      CLOSED) pr_icon="🔴" ;;
+      OPEN) pr_icon="🟢" ;;
+    esac
   fi
 fi
 
@@ -57,6 +65,6 @@ fi
 printf "🤖 %s | %b | %b | %b | %b\n" \
   "$model" "$ctx_str" "$cost_str" "$diff_str" "$git_str"
 if [ -n "$pr_link" ]; then
-  printf "${CYAN}🔗 %s${RESET}\n" "$pr_link"
+  printf "%s ${CYAN}%s${RESET}\n" "$pr_icon" "$pr_link"
 fi
 exit 0
