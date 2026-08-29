@@ -1,0 +1,21 @@
+theme = "catppuccin-mocha"
+
+diff_view = "side-by-side"
+username = "David Wen"
+
+leader = ";"
+mouse = true
+cursor_line = true
+search_highlight = true
+transparent_background = true
+scroll_offset = 5
+
+comment_types = [
+  { id = "issue", definition = "problems to fix", color = "red" },
+  { id = "suggestion", definition = "possible improvements", color = "yellow" },
+  { id = "note", definition = "ask for clarification or acknowledge", color = "blue" },
+  { id = "praise", definition = "positive feedback", color = "green" },
+]
+
+[forge]
+comment_type_prefix = false
