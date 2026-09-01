@@ -8,6 +8,7 @@
   - NEVER assume that permission to commit earlier work implies permission to commit later work _unless explicitly stated_.
 - Never create a new git worktree unless explicitly asked to.
 - Never make code changes unless asked to
+- Never respond to comments on PRs without my approval
 
 ## Communication Style
 
