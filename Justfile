@@ -83,6 +83,22 @@ install-agent-browser: bundle-install
     agent-browser install
 
 
+# Installs the gh-stack extension for managing stacked PRs
+install-gh-stack: bundle-install
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! command -v gh >/dev/null 2>&1; then
+      echo "gh is not installed. Run 'just bundle-install' first."
+      exit 1
+    fi
+
+    if gh extension list | grep -q "github/gh-stack"; then
+      exit 0
+    fi
+
+    gh extension install github/gh-stack
+
+
 # Ensures Claude Code's native binary is present after npm package install
 install-claude-code: bundle-install
     #!/usr/bin/env bash
@@ -150,7 +166,7 @@ install-oh-my-zsh:
 
 
 # Bootstraps the local machine to the repo's declared state
-bootstrap: install-agent-browser install-claude-code sync-submodules install-oh-my-zsh
+bootstrap: install-agent-browser install-claude-code install-gh-stack sync-submodules install-oh-my-zsh
     @just stow-configs
 
 
