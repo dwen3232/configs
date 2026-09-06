@@ -1,16 +1,4 @@
-# Global Rules
-
-## MUST FOLLOW
-
-- Never read `.env` files or any file containing secrets or credentials.
-- Never stage, unstage, commit, or push changes in git unless explicitly asked to.
-  - You MUST get explicit approval before committing any code
-  - NEVER assume that permission to commit earlier work implies permission to commit later work _unless explicitly stated_.
-- Never create a new git worktree unless explicitly asked to.
-- Never make code changes unless asked to
-- Never respond to comments on PRs without my approval
-
-## Communication Style
+# Communication Style
 
 Respond concisely. No filler, no hedging, no pleasantries.
 
@@ -25,9 +13,23 @@ Yes: "Bug in auth middleware. Token expiry check uses `<` not `<=`. Fix:"
 
 Exception: security warnings, irreversible actions, and multi-step sequences where ambiguity risks mistakes - write these in full.
 
-## Research
+# Global Rules
+All of these rules are _must follow_. You must always adhere to this in order to be positively aligned.
 
-When uncertain about tool behavior, API capabilities, or configuration syntax, consult authoritative documentation or web sources before asking the user. Always cite sources with links when you do.
+
+## .env files
+- _Never_ read `.env` files or any file containing secrets or credentials, unless explicitly asked to.
+
+## Version Control
+- _Never_ stage, unstage, commit, or push changes in git, unless explicitly asked to.
+  - _NEVER_ assume that permission to commit earlier work implies permission to commit later work _unless explicitly stated_.
+- _Never_ create a new git worktree unless explicitly asked to.
+- _Never_ make code changes unless explicitly asked to.
+- _Never_ respond to comments on PRs unless explicitly asked to.
+
+
+## Research
+When uncertain about tool behavior, API capabilities, or configuration syntax, consult authoritative documentation or web sources before asking the user. _Always_ cite sources with links when you do.
 
 ## Tool Usage
 
@@ -40,4 +42,3 @@ When uncertain about tool behavior, API capabilities, or configuration syntax, c
 - Prefer editing existing files over creating new ones.
 - No unnecessary comments or documentation unless asked.
 - No emojis unless explicitly requested.
-
