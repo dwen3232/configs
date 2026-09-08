@@ -1,11 +1,8 @@
 ---
 name: github
 description: >
-  Load this skill when using the `gh` CLI for GitHub work, especially stacked
-  PRs via `gh stack` (the gh-stack extension), reading repo files without
-  cloning, checking out PRs into worktrees, or newer `gh` features not covered
-  by pretraining knowledge.
-
+  Load this skill when using the `gh` CLI for GitHub work: reading repo files without
+  cloning, checking out PRs into worktrees, working with PR stacks
   Examples of when to load this skill:
   - "break this PR into a stack"
   - "use gh stack to submit these branches"
@@ -20,51 +17,38 @@ Covers `gh` behavior not reliably in pretraining: the `gh-stack` extension
 (unknown entirely) and `gh` features added in recent releases. For everything
 else, use existing knowledge or `gh <command> --help`.
 
-## gh-stack
+## `gh api`
 
-Stack metadata: `.git/gh-stack` (untracked JSON). Rebase state:
-`.git/gh-stack-rebase-state`.
+`gh api` is read-only here. Never use it for anything with a side effect —
+editing, commenting, creating, merging, closing, labeling — a dedicated
+subcommand exists for that (`gh pr comment`, `gh pr review`, `gh pr edit`,
+`gh issue comment`, `gh issue edit`, etc.); use it instead. Reserve `gh api`
+for reads that have no subcommand equivalent (custom field selection,
+GraphQL-only data).
 
-```bash
-gh stack init [branches...]     # -b/--base sets trunk (default: repo default branch)
-gh stack add [branch]
-gh stack add -Am "message"      # stage all + commit + auto-name branch from message
-gh stack view [-s|--json]
-gh stack up/down [n]            # default 1
-gh stack top / bottom / trunk
-gh stack switch                 # interactive branch picker
-gh stack checkout <stack|pr|url|branch>
+## Stacked PRs (gh-stack)
 
-gh stack rebase [branch]        # cascade rebase; auto-handles merged-PR detection
-gh stack rebase --continue
-gh stack rebase --abort
-gh stack rebase --downstack     # only down to current branch
-gh stack rebase --upstack       # only up to top
-gh stack modify                 # interactive TUI: drop/fold/insert/reorder/rename
-                                 # requires clean tree, no rebase in progress, linear history
+`gh stack` manages an ordered chain of branches, each with its own PR based on
+the branch below it. Non-interactive use is the load-bearing rule: `gh stack`
+detects whether stdout is a TTY, and the wrong invocation blocks forever under
+an agent harness or a piped shell.
 
-gh stack submit                 # push + create/update PRs; interactive editor
-gh stack submit --auto          # skip editor, auto-generate titles (new PRs default draft)
-gh stack submit --auto --open   # mark PRs ready-for-review
-gh stack push                   # push only, per-branch --force-with-lease, non-atomic
-gh stack sync [--prune]         # fetch, reconcile, rebase, push, sync PRs, prune merged
-gh stack link <branch|pr> ...   # link existing PRs into a stack without local tracking
+| Always run | Never run bare |
+|---|---|
+| `gh stack view --json` | `gh stack view` (opens a TUI) |
+| `gh stack submit --auto` | `gh stack submit` (prompts per PR) |
+| `gh stack merge <target> --yes` | `gh pr merge` (can't merge a stack) |
+| `gh stack init <branch>...` | `gh stack init` (prompts for names) |
+| `gh stack checkout <target>` | `gh stack checkout` (opens a menu) |
+| `gh stack up/down/top/bottom` | `gh stack switch` / `gh stack modify` (menu/TUI only) |
 
-gh stack merge [stack|pr]       # merge up to selection, all-or-nothing, respects merge queues
-gh stack merge -y --squash
-gh stack unstack [stack-number] # remove from GitHub + local tracking (alias: delete)
-gh stack unstack --local
-```
-
-Env vars: `GH_STACK_THEME=light|dark|auto`, `GH_STACK_HYPERLINKS=0|1`.
-
-`gh stack alias [name] --remove` — create/remove wrapper (default `gs`) in
-`~/.local/bin/`.
-
-Gotchas:
-- Changing trunk requires rebasing the whole stack.
-- `gh stack merge` only checks basic PR state locally; branch protection still applies at merge time.
-- Diverged local/remote stacks trigger interactive resolution in `gh stack sync` (use remote / delete remote / cancel).
+Before creating a stack, before restructuring one, when a command fails, or on
+a rebase/merge conflict, read `references/gh-stack/gh-stack.md` — it covers
+setup, branch placement, the core loop, syncing, merge scoping, the
+`view --json` schema, and exit-code recovery. It in turn points to
+`references/gh-stack/references/{stack-design,commands,troubleshooting}.md`
+for deeper detail on each of those topics; load only the one that matches the
+task.
 
 ## Newer `gh` core commands/flags
 
@@ -87,11 +71,6 @@ gh discussion list --repo OWNER/REPO   # preview
 gh discussion create --category "General" --title "Hello" --body "Hello World!"
 gh discussion view 123
 gh discussion comment 123
-
-gh skill search terraform   # preview; GitHub-hosted agent skills for Copilot etc — not dot-claude/skills
-gh skill install github/awesome-copilot documentation-writer
-gh skill list
-gh skill update --all
 ```
 
 - `gh extension install` no longer requires authentication.
