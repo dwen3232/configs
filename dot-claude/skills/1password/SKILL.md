@@ -1,7 +1,7 @@
 ---
 name: 1password
 description: >
-  Load this skill only when the user explicitly mentions 1Password or "1pass". Use it to work with 1Password CLI secret references, run commands with secrets injected, inject templates, or manage 1Password items without exposing secret values. Do not load for general secrets or credential management unless 1Password is specifically referenced.
+  Load this skill when the user explicitly mentions 1Password or when 1Password is needed to execute a script. Use it to work with 1Password CLI secret references, run commands with secrets injected, inject templates, or manage 1Password items without exposing secret values. Do not load for general secrets or credential management unless 1Password is specifically referenced.
 
   Examples of when to load this skill:
   - "use 1pass to inject secrets into the config file"
@@ -18,7 +18,7 @@ Use the 1Password CLI to pass secrets to commands without exposing secret values
 
 Run `op [command] --help` for full details on any command.
 
-You do NOT need to run `op signin` before executing a script that utilizes 1Password CLI; any `op` command will automatically prompt the user for auth.
+**You do NOT need to run `op signin` before executing a script that utilizes 1Password CLI; any `op` command will automatically prompt the user for auth.**
 
 ## Priority rules
 
